@@ -8,7 +8,7 @@ public class Garage_Customers {
   Garage_CustomerEntry Ha = new Garage_CustomerEntry("YXYXYX", "Handelsbanken", "1423598090");
   Garage_CustomerEntry SE = new Garage_CustomerEntry("XXXXXY", "SEB", "5531877890");
   Garage_CustomerEntry Sw = new Garage_CustomerEntry("YYYYYX", "Swedbank", "9regNr49");
-  
+
 
    public void setupAccounts(){
     bankList.add(No);
@@ -17,6 +17,18 @@ public class Garage_Customers {
     bankList.add(Sw);
   }
 
+  public boolean printHistory() {
+    String entryList = "Car List: \n";
+    for(int i = 0; i < customerRecord.size(); i++) {
+      entryList = entryList + "Car license number: " + customerRecord.get(i).getregNr();
+      entryList = entryList + "\n Entry time:  " + customerRecord.get(i).entryTime + " hours. ";
+      entryList = entryList + "\n Last payment time:  " + customerRecord.get(i).lastPayTime + " hours. ";
+      entryList = entryList + "\n Card number: " + customerRecord.get(i).getAccountNumber();
+      entryList = entryList + " \n" ;
+    }
+    System.out.println(entryList);
+    return true;
+  }
   public boolean printCar() {
     String entryList = "Car List: \n";
     for(int i = 0; i < bankList.size(); i++) {

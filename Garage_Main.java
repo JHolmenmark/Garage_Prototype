@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Garage_Main {
   public static Garage_Customers allCustomers = new Garage_Customers();
-  public static String optionList = "Options: \n 1: carEntryTest \n 2: paymentTest \n 3: leaveByExitTest \n 4: airQualityToggle \n 5: fillGarageToggle \n 6: print \n 7: Quit \n";
+  public static String optionList = "Options: \n 1: carEntryTest \n 2: paymentTest \n 3: leaveByExitTest \n 4: airQualityToggle \n 5: fillGarageToggle \n 6: printGarageContent \n 7: historyPrint \n 8: Quit \n";
   public static String currentUsername = "Tester";
   public static String garageFullness = "Available";
   public static String optionSelect = "";
@@ -51,6 +51,8 @@ public class Garage_Main {
         problemDidNotOccur = leaveByExitTest();
     } else if (optionSelect.contains("print") || optionSelect.contains("6")) {
         problemDidNotOccur = allCustomers.printCar();
+    } else if (optionSelect.contains("history") || optionSelect.contains("7")) {
+        problemDidNotOccur = allCustomers.printHistory();
     } else if (optionSelect.contains("fill") || optionSelect.contains("5")) {
         if(garageCapacity == 17) {
           garageCapacity = 0;
@@ -65,7 +67,7 @@ public class Garage_Main {
         } else {
           airQuality = true;
         }
-    } else if (optionSelect.contains("quit") || optionSelect.contains("7")) {
+    } else if (optionSelect.contains("quit") || optionSelect.contains("8")) {
       goLean = false;
       problemDidNotOccur = true;
     } else {
@@ -219,7 +221,7 @@ public class Garage_Main {
       Garage_CustomerEntry painment = allCustomers.bankList.get(found);
       System.out.println("Please enter the departure time value: ");
       int newPassword = scan.nextInt();
-      while (painment.lastPayTime >= newPassword || painment.entryTime >= newPassword) {
+      while (painment.lastPayTime > newPassword || painment.entryTime > newPassword) {
         System.out.println("No time travel please, you must depart After entering and/or paying");
         newPassword = scan.nextInt();
       }
