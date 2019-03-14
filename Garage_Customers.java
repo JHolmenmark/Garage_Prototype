@@ -21,8 +21,8 @@ public class Garage_Customers {
     String entryList = "Car List: \n";
     for(int i = 0; i < customerRecord.size(); i++) {
       entryList = entryList + "Car license number: " + customerRecord.get(i).getregNr();
-      entryList = entryList + "\n Entry time:  " + customerRecord.get(i).entryTime + " hours. ";
-      entryList = entryList + "\n Last payment time:  " + customerRecord.get(i).lastPayTime + " hours. ";
+      entryList = entryList + "\n Entry time:  " + customerRecord.get(i).entryTime + " o'clock. ";
+      entryList = entryList + "\n Last payment time:  " + customerRecord.get(i).lastPayTime + " o'clock. ";
       entryList = entryList + "\n Card number: " + customerRecord.get(i).getAccountNumber();
       entryList = entryList + " \n" ;
     }
@@ -33,8 +33,8 @@ public class Garage_Customers {
     String entryList = "Car List: \n";
     for(int i = 0; i < bankList.size(); i++) {
       entryList = entryList + "Car license number: " + bankList.get(i).getregNr();
-      entryList = entryList + "\n Entry time:  " + bankList.get(i).entryTime + " hours. ";
-      entryList = entryList + "\n Last payment time:  " + bankList.get(i).lastPayTime + " hours. ";
+      entryList = entryList + "\n Entry time:  " + bankList.get(i).entryTime + " o'clock. ";
+      entryList = entryList + "\n Last payment time:  " + bankList.get(i).lastPayTime + " o'clock. ";
       entryList = entryList + "\n Card number: " + bankList.get(i).getAccountNumber();
       entryList = entryList + " \n" ;
     }
