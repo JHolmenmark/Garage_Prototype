@@ -43,29 +43,29 @@ public class Garage_Main {
   public static boolean optionHandle() {
     boolean goodOption = true;
     boolean problemDidNotOccur = true;
-    if(optionSelect.contains("car") || optionSelect.contains("entry")){
+    if(optionSelect.contains("car") || optionSelect.contains("entry") || optionSelect.contains("1")){
       problemDidNotOccur = carEntryTest();
-    } else if (optionSelect.contains("pay") ) {
+    } else if (optionSelect.contains("pay") || optionSelect.contains("2")) {
         problemDidNotOccur = paymentTest();
-    } else if (optionSelect.contains("leave")|| optionSelect.contains("exit")) {
+    } else if (optionSelect.contains("leave")|| optionSelect.contains("exit") || optionSelect.contains("3")) {
         problemDidNotOccur = leaveByExitTest();
-    } else if (optionSelect.contains("print")) {
+    } else if (optionSelect.contains("print") || optionSelect.contains("6")) {
         problemDidNotOccur = allCustomers.printCar();
-    } else if (optionSelect.contains("fill")) {
+    } else if (optionSelect.contains("fill") || optionSelect.contains("5")) {
         if(garageCapacity == 17) {
           garageCapacity = 0;
         } else {
           garageCapacity = 17;
         }
         problemDidNotOccur = true;
-    } else if (optionSelect.contains("air")) {
+    } else if (optionSelect.contains("air") || optionSelect.contains("4")) {
         problemDidNotOccur = true;
         if(airQuality) {
           airQuality = false;
         } else {
           airQuality = true;
         }
-    } else if (optionSelect.contains("quit")) {
+    } else if (optionSelect.contains("quit") || optionSelect.contains("7")) {
       goLean = false;
       problemDidNotOccur = true;
     } else {
