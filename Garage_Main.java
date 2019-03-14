@@ -161,7 +161,7 @@ public class Garage_Main {
         newUsername = scan.next();
         while (!allCustomers.goodRegNrFormat(newUsername)) {
           System.out.println("That license number is not correct format. Please try again: ");
-          newUsername = scan.nextLine();
+          newUsername = scan.next();
         }
         System.out.println("Please enter the card number: ");
         String newCardNumber = scan.next();
@@ -212,13 +212,17 @@ public class Garage_Main {
     String newUsername = scan.next();
     while (!allCustomers.goodRegNrFormat(newUsername)) {
       System.out.println("That license number is not correct format. Please try again: ");
-      newUsername = scan.nextLine();
+      newUsername = scan.next();
     }
     int found = allCustomers.getCustomerEntry(newUsername, "");
     if(found >= 0) {
       Garage_CustomerEntry painment = allCustomers.bankList.get(found);
       System.out.println("Please enter the departure time value: ");
       int newPassword = scan.nextInt();
+      while (painment.lastPayTime >= newPassword || painment.entryTime >= newPassword) {
+        System.out.println("No time travel please, you must depart After entering and/or paying");
+        newPassword = scan.nextInt();
+      }
       if(painment.lastPayTime == newPassword || painment.entryTime == newPassword){
         System.out.println("Thank you for visiting the garage, have a nice day! ");
         allCustomers.customerRecord.add(painment);
@@ -226,7 +230,7 @@ public class Garage_Main {
         return true;
       } else {
         if(painment.lastPayTime < 0){
-          System.out.println("Payment has expired, last payment was at: " + painment.entryTime + "hours: ");
+          System.out.println("You have not paid yet, entry to garage was at: " + painment.entryTime + "hours: ");
         } else {
           System.out.println("Payment has expired, last payment was at: " + painment.lastPayTime + "hours: ");
         }
