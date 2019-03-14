@@ -180,13 +180,13 @@ public class Garage_Main {
           int staytime = 0;
           if(painment.lastPayTime < 0){
             while (newPassword < painment.entryTime){
-              System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last entry time was: " + painment.entryTime + "hours: ");
+              System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last entry time was: " + painment.entryTime + " o'clock ");
               newPassword = scan.nextInt();
             }
              staytime = newPassword - painment.entryTime;
           } else {
             while (newPassword < painment.lastPayTime){
-              System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last payment time was: " + painment.entryTime + "hours: ");
+              System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last payment time was: " + painment.entryTime + " o'clock ");
               newPassword = scan.nextInt();
             }
             staytime = newPassword - painment.lastPayTime;
@@ -232,9 +232,9 @@ public class Garage_Main {
         return true;
       } else {
         if(painment.lastPayTime < 0){
-          System.out.println("You have not paid yet, entry to garage was at: " + painment.entryTime + "hours: ");
+          System.out.println("You have not paid yet, entry to garage was at: " + painment.entryTime + " o'clock ");
         } else {
-          System.out.println("Payment has expired, last payment was at: " + painment.lastPayTime + "hours: ");
+          System.out.println("Payment has expired, last payment was at: " + painment.lastPayTime + " o'clock ");
         }
         return false;
       }
