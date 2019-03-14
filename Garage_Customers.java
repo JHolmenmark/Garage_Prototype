@@ -8,7 +8,7 @@ public class Garage_Customers {
   Garage_CustomerEntry Ha = new Garage_CustomerEntry("YXYXYX", "Handelsbanken", "1423598090");
   Garage_CustomerEntry SE = new Garage_CustomerEntry("XXXXXY", "SEB", "5531877890");
   Garage_CustomerEntry Sw = new Garage_CustomerEntry("YYYYYX", "Swedbank", "9regNr49");
-
+  
 
    public void setupAccounts(){
     bankList.add(No);

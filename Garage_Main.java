@@ -2,12 +2,14 @@ import java.util.Scanner;
 
 public class Garage_Main {
   public static Garage_Customers allCustomers = new Garage_Customers();
-  public static String optionList = "Options: \n 1: carEntryTest \n 2: paymentTest \n 3: leaveByExitTest \n 4: print \n 5: Quit \n";
-  public static String currentUsername = "Guest";
+  public static String optionList = "Options: \n 1: carEntryTest \n 2: paymentTest \n 3: leaveByExitTest \n 4: airQualityToggle \n 5: fillGarageToggle \n 6: print \n 7: Quit \n";
+  public static String currentUsername = "Tester";
+  public static String garageFullness = "Available";
   public static String optionSelect = "";
+  public static int garageCapacity = 17;
   public static Scanner scan = new Scanner(System.in);
   public static boolean goLean = true;
-
+  public static boolean airQuality = true;
 
   public Garage_Main() {
     allCustomers.setupAccounts();
@@ -49,6 +51,20 @@ public class Garage_Main {
         problemDidNotOccur = leaveByExitTest();
     } else if (optionSelect.contains("print")) {
         problemDidNotOccur = allCustomers.printCar();
+    } else if (optionSelect.contains("fill")) {
+        if(garageCapacity == 17) {
+          garageCapacity = 0;
+        } else {
+          garageCapacity = 17;
+        }
+        problemDidNotOccur = true;
+    } else if (optionSelect.contains("air")) {
+        problemDidNotOccur = true;
+        if(airQuality) {
+          airQuality = false;
+        } else {
+          airQuality = true;
+        }
     } else if (optionSelect.contains("quit")) {
       goLean = false;
       problemDidNotOccur = true;
@@ -67,6 +83,15 @@ public class Garage_Main {
   public static void main(String[] args) {
     welcomeLine();
     while (goLean) {
+      if (allCustomers.bankList.size() >= garageCapacity) {
+        garageFullness = "Full!";
+      } else {
+        garageFullness = "Available";
+      }
+      System.out.println("Parking for cars is currently: " + garageFullness);
+      if(!airQuality) {
+        System.out.println("The air quality inside the garage is at unsafe levels!");
+      }
       optionList();
       optionHandle();
     }
@@ -75,93 +100,111 @@ public class Garage_Main {
 
 
   public static boolean carEntryTest(){
-    System.out.println("Please enter the license plate nr: ");
-    scan.nextLine();
-    String newUsername = scan.nextLine();
-    if(!allCustomers.goodRegNrFormat(newUsername)) {
-      System.out.println("Sorry, we could not read your license plate. Please use the card reader");
-      System.out.println("Please enter the card number: ");
-      String newCardNumber = scan.next();
-      while (!allCustomers.cardGoodFormat(newCardNumber)) {
-          System.out.println("Incorrect number format, please try again: ");
-          newCardNumber = scan.next();
-      }
-      System.out.println("Please enter the entry time value: ");
-      int newPassword = scan.nextInt();
-      if(allCustomers.addAccount("", newPassword, newCardNumber)) {
-        System.out.println("Welcome! ");
-        return true;
-      } else {
-        System.out.println("Sorry, for some reason we could not let you in, please contact a staff member");
-        return false;
-      }
+    if (allCustomers.bankList.size() >= garageCapacity) {
+      System.out.println("Sorry, we are full right now, please come back later. ");
+      return false;
+    } else if(!airQuality) {
+      System.out.println("Sorry, the air supply in the garage is currently not at a safe level, please come back later. ");
+      return false;
+    } else {
 
-    }
-    else if(!allCustomers.regNrExists(newUsername)) {
-        //checks that the registration does not already exists
+
+      System.out.println("Parking here costs 20 kr per hour.");
+      System.out.println("Please enter the license plate nr: ");
+      scan.nextLine();
+      String newUsername = scan.nextLine();
+      if(!allCustomers.goodRegNrFormat(newUsername)) {
+        System.out.println("Sorry, we could not read your license plate. Please use the card reader");
+        System.out.println("Please enter the card number: ");
+        String newCardNumber = scan.next();
+        while (!allCustomers.cardGoodFormat(newCardNumber)) {
+            System.out.println("Incorrect number format, please try again: ");
+            newCardNumber = scan.next();
+        }
         System.out.println("Please enter the entry time value: ");
         int newPassword = scan.nextInt();
-        if(allCustomers.addAccount(newUsername, newPassword, "")) {
-          System.out.println("Welcome " + newUsername);
+        if(allCustomers.addAccount("", newPassword, newCardNumber)) {
+          System.out.println("Welcome! ");
           return true;
         } else {
           System.out.println("Sorry, for some reason we could not let you in, please contact a staff member");
           return false;
         }
-      } else {
-        System.out.println("Sorry, a car with your license number already exists, please contact a staff member. ");
-        return false;
+
       }
+      else if(!allCustomers.regNrExists(newUsername)) {
+          //checks that the registration does not already exists
+          System.out.println("Please enter the entry time value: ");
+          int newPassword = scan.nextInt();
+          if(allCustomers.addAccount(newUsername, newPassword, "")) {
+            System.out.println("Welcome " + newUsername);
+            return true;
+          } else {
+            System.out.println("Sorry, for some reason we could not let you in, please contact a staff member");
+            return false;
+          }
+        } else {
+          System.out.println("Sorry, a car with your license number already exists, please contact a staff member. ");
+          return false;
+        }
+    }
   }
 
-  public static boolean paymentTest() {
-    System.out.println("Please enter the license plate nr: ");
-    String newUsername = scan.next();
-    while (!allCustomers.goodRegNrFormat(newUsername)) {
-      System.out.println("That license number is not correct format. Please try again: ");
-      newUsername = scan.nextLine();
-    }
-    System.out.println("Please enter the card number: ");
-    String newCardNumber = scan.next();
-    while (!allCustomers.cardGoodFormat(newCardNumber)) {
-        System.out.println("Incorrect number format, please try again: ");
-        newCardNumber = scan.next();
-    }
-    int found = allCustomers.getCustomerEntry(newUsername, newCardNumber);
-    if(found >= 0) {
-      Garage_CustomerEntry painment = allCustomers.bankList.get(found);
-
-      System.out.println("Please enter the payment time value: ");
-      int newPassword = scan.nextInt();
-      int staytime = 0;
-      if(painment.lastPayTime < 0){
-        while (newPassword < painment.entryTime){
-          System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last entry time was: " + painment.entryTime + "hours: ");
-          newPassword = scan.nextInt();
-        }
-         staytime = newPassword - painment.entryTime;
+    public static boolean paymentTest() {
+      System.out.println("Would you like to pay with your card or an invoice?");
+      String newUsername = scan.next();
+      if (newUsername.contains("invoice")) {
+        System.out.println("Please contact our local staff who will help you finish your payment.");
+        return false;
       } else {
-        while (newPassword < painment.lastPayTime){
-          System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last payment time was: " + painment.entryTime + "hours: ");
-          newPassword = scan.nextInt();
+        System.out.println("Please enter the license plate nr: ");
+        newUsername = scan.next();
+        while (!allCustomers.goodRegNrFormat(newUsername)) {
+          System.out.println("That license number is not correct format. Please try again: ");
+          newUsername = scan.nextLine();
         }
-        staytime = newPassword - painment.lastPayTime;
-      }
-      int price = 20 * staytime;
-      System.out.println("Your card has been charged " + price + " kr. Please exit the garage within 15 minutes, have a nice day!");
-      if(allCustomers.bankList.get(found).regNr.equals("")) {
-        allCustomers.bankList.get(found).regNr = newUsername;
-      }
-      if(allCustomers.bankList.get(found).getAccountNumber().equals("")) {
-        allCustomers.bankList.get(found).setAccountNumber(newCardNumber);
-      }
-      allCustomers.bankList.get(found).lastPayTime = newPassword;
-      return true;
+        System.out.println("Please enter the card number: ");
+        String newCardNumber = scan.next();
+        while (!allCustomers.cardGoodFormat(newCardNumber)) {
+            System.out.println("Incorrect number format, please try again: ");
+            newCardNumber = scan.next();
+        }
+        int found = allCustomers.getCustomerEntry(newUsername, newCardNumber);
+        if(found >= 0) {
+          Garage_CustomerEntry painment = allCustomers.bankList.get(found);
 
-    } else {
-      System.out.println("No entry registered by that license number or card number found, please try paying again or contact a staff member.");
-      return false;
-    }
+          System.out.println("Please enter the payment time value: ");
+          int newPassword = scan.nextInt();
+          int staytime = 0;
+          if(painment.lastPayTime < 0){
+            while (newPassword < painment.entryTime){
+              System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last entry time was: " + painment.entryTime + "hours: ");
+              newPassword = scan.nextInt();
+            }
+             staytime = newPassword - painment.entryTime;
+          } else {
+            while (newPassword < painment.lastPayTime){
+              System.out.println("Unless you are driving a delorean, you must leave at a time after you entered. Last payment time was: " + painment.entryTime + "hours: ");
+              newPassword = scan.nextInt();
+            }
+            staytime = newPassword - painment.lastPayTime;
+          }
+          int price = 20 * staytime;
+          System.out.println("Your card has been charged " + price + " kr. Please exit the garage within 15 minutes, have a nice day!");
+          if(allCustomers.bankList.get(found).regNr.equals("")) {
+            allCustomers.bankList.get(found).regNr = newUsername;
+          }
+          if(allCustomers.bankList.get(found).getAccountNumber().equals("")) {
+            allCustomers.bankList.get(found).setAccountNumber(newCardNumber);
+          }
+          allCustomers.bankList.get(found).lastPayTime = newPassword;
+          return true;
+
+        } else {
+          System.out.println("No entry registered by that license number or card number found, please try paying again or contact a staff member.");
+          return false;
+        }
+      }
   }
 
   public static boolean leaveByExitTest(){
@@ -176,7 +219,7 @@ public class Garage_Main {
       Garage_CustomerEntry painment = allCustomers.bankList.get(found);
       System.out.println("Please enter the departure time value: ");
       int newPassword = scan.nextInt();
-      if(painment.lastPayTime == newPassword){
+      if(painment.lastPayTime == newPassword || painment.entryTime == newPassword){
         System.out.println("Thank you for visiting the garage, have a nice day! ");
         allCustomers.customerRecord.add(painment);
         allCustomers.bankList.remove(found);
